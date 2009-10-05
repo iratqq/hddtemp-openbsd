@@ -1,0 +1,6 @@
+hddtemp-openbsd is compatible software of hddtemp.
+
+hddtemp requires database file.
+please download "hddtemp.db" from
+ - https://savannah.nongnu.org/projects/hddtemp/
+
