@@ -119,7 +119,6 @@ ata_model()
 	struct ataparams *inqbuf;
         struct atareq req;
         char inbuf[DEV_BSIZE], *s;
-        u_int64_t capacity;
 
         memset(&inbuf, 0, sizeof(inbuf));
         memset(&req, 0, sizeof(req));
@@ -209,6 +208,7 @@ smart_temperature()
 
 extern const char *__progname;		/* from crt0.o */
 
+void
 usage()
 {
 	fprintf(stderr, "%s [-d] [-f database] device\n", __progname);
@@ -240,6 +240,7 @@ close_listen_socks(void)
  * SIGCHLD handler.  This is called whenever a child dies.  This will then
  * reap any zombies left by exited children.
  */
+/* ARGSUSED */
 static void
 main_sigchld_handler(int sig)
 {
@@ -301,7 +302,6 @@ int client_linsten()
 	int pid;
 	int readlen;
 	char buf[BUFSIZ];
-	int fd;
 	int outlen;
 
 	/*
@@ -546,13 +546,13 @@ main(int argc, char *argv[])
 			temp = ftoc(temp);
 
 		printf("%s: %s: %dC\n", hdd_dev, hdd_model, temp);
-		return 0;
-	}
+	} else {
+		/* daemon_mode */
+		if (daemon(0, 1)) {
+			errx(2, "fork failed");
+		}
 
-	/* daemon_mode */
-	if (daemon(0, 1)) {
-		errx(2, "fork failed");
+		client_linsten();
 	}
-
-	client_linsten();
+	return 0;
 }

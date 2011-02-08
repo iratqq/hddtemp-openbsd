@@ -20,7 +20,7 @@
 #include <sys/types.h>
 #include <sys/time.h>
 #include <sys/socket.h>
-
+#include <unistd.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <err.h>
@@ -49,7 +49,6 @@ int
 privsep_init(void)
 {
 	int socks[2], cmd;
-	int ret = 0;
 	struct passwd *pw;
 
 	/* Create sockets */
